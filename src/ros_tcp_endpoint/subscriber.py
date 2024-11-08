@@ -25,7 +25,7 @@ class RosSubscriber(RosReceiver):
     Class to send messages outside of ROS network
     """
 
-    def __init__(self, topic, message_class, tcp_server, queue_size=10):
+    def __init__(self, topic, message_class, tcp_server, queue_size=10, latch=False):
         """
 
         Args:
@@ -42,7 +42,7 @@ class RosSubscriber(RosReceiver):
         self.queue_size = queue_size
 
         # Start Subscriber listener function
-        self.sub = rospy.Subscriber(self.topic, self.msg, self.send)
+        self.sub = rospy.Subscriber(self.topic, self.msg, callback=self.send, queue_size=self.queue_size, latch=latch)
 
     def send(self, data):
         """
